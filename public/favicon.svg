@@ -1,0 +1,7 @@
+<!-- filepath: /Users/augustedubuisson/Library/CloudStorage/OneDrive-Personal/CJ/avacare-medical-affiliate/public/favicon.svg -->
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="128" fill="#1e5f74"/>
+  <path d="M128 256 L256 128 L384 256 L384 384 H128 V256Z" fill="white"/>
+  <path d="M320 240 A64 64 0 0 1 192 240 A64 64 0 0 1 320 240Z" fill="#e67e22"/>
+  <path d="M224 304 H288 V384 H224 V304Z" fill="#e67e22"/>
+</svg>
