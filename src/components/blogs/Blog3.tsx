@@ -1,7 +1,7 @@
 import React from 'react';
-import BlogPostLayout from './BlogPostLayout';
 import styled from 'styled-components';
-import { getProductLink } from '../../constants/links';
+import { getProductLink } from '../../constants/affiliateLinks';
+import BlogPostLayout from './BlogPostLayout';
 
 const BlogImage = styled.img`
   max-width: 100%;
@@ -43,10 +43,17 @@ const Blog3: React.FC = () => {
       keywords="hospital beds, home care beds, medical beds, semi-electric hospital beds, full-electric hospital beds, hospital bed accessories, home healthcare"
       image="https://placehold.co/800x500/e6f0ff/0062cc?text=Hospital+Beds+for+Home+Care"
       date="March 22, 2023"
-      author="Michael Thompson, Healthcare Equipment Specialist"
+      author="Dr. Sarah Williams"
       readTime="10 min read"
       blogId="3"
+      authorImage="https://placehold.co/80x80/e6f0ff/0062cc?text=SW" 
+      category="Home Healthcare"
+      featuredImage="https://placehold.co/800x500/e6f0ff/0062cc?text=Hospital+Beds+for+Home+Care"
     >
+      <p>
+        Selecting the right hospital bed for home care is a crucial decision that can significantly impact both patient comfort and caregiver convenience. Whether recovering from surgery, managing a chronic condition, or receiving long-term care, the appropriate hospital bed can enhance quality of life, promote healing, and prevent complications.
+      </p>
+      
       <p>
         When caring for a loved one at home, few pieces of medical equipment have as significant an impact on comfort, safety, and quality of care as a hospital bed. Designed to provide adjustability, accessibility, and specialized features that standard beds simply can't offer, hospital beds can dramatically improve both patient outcomes and caregiver experience.
       </p>

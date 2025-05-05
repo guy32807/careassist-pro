@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+// Define all styled components outside the component function
 const LogoContainer = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
   font-weight: 700;
   font-size: 1.5rem;
 `;
@@ -19,7 +20,7 @@ const LogoIcon = styled.div`
   height: 40px;
   margin-right: 8px;
   color: white;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
   border-radius: 50%;
   font-size: 1.2rem;
 `;
@@ -36,54 +37,23 @@ const BrandName = styled.span`
 
 const Tagline = styled.span`
   font-size: 0.8rem;
-  color: ${({ theme }) => theme.colors.textLight};
+  color: ${({ theme }) => theme.colors?.textLight || '#6c757d'};
   font-weight: 400;
 `;
 
 interface LogoProps {
   includeBrandName?: boolean;
   includeTagline?: boolean;
-  size?: 'small' | 'medium' | 'large';
 }
 
 const Logo: React.FC<LogoProps> = ({ 
   includeBrandName = true, 
-  includeTagline = true,
-  size = 'medium'
+  includeTagline = true
 }) => {
-  // Scale sizes based on the size prop
-  const logoSize = {
-    small: { container: '1.2rem', icon: '30px', brandName: '1.2rem', tagline: '0.7rem' },
-    medium: { container: '1.5rem', icon: '40px', brandName: '1.5rem', tagline: '0.8rem' },
-    large: { container: '2rem', icon: '50px', brandName: '2rem', tagline: '0.9rem' }
-  };
-  
-  const StyledLogoContainer = styled(LogoContainer)`
-    font-size: ${logoSize[size].container};
-  `;
-  
-  const StyledLogoIcon = styled(LogoIcon)`
-    width: ${logoSize[size].icon};
-    height: ${logoSize[size].icon};
-  `;
-
-  // Define StyledLogoText properly
-  const StyledLogoText = styled(LogoText)`
-    /* Additional styling for different sizes if needed */
-  `;
-  
-  const StyledBrandName = styled(BrandName)`
-    font-size: ${logoSize[size].brandName};
-  `;
-  
-  const StyledTagline = styled(Tagline)`
-    font-size: ${logoSize[size].tagline};
-  `;
-
   return (
-    <StyledLogoContainer to="/">
-      <StyledLogoIcon>
-        {/* This represents a medical "plus" symbol */}
+    <LogoContainer to="/">
+      <LogoIcon>
+        {/* Simple medical plus symbol */}
         <svg
           width="60%"
           height="60%"
@@ -99,15 +69,15 @@ const Logo: React.FC<LogoProps> = ({
             strokeLinejoin="round"
           />
         </svg>
-      </StyledLogoIcon>
+      </LogoIcon>
       
       {includeBrandName && (
-        <StyledLogoText>
-          <StyledBrandName>AvaCare</StyledBrandName>
-          {includeTagline && <StyledTagline>Medical Equipment</StyledTagline>}
-        </StyledLogoText>
+        <LogoText>
+          <BrandName>CareAssist</BrandName>
+          {includeTagline && <Tagline>Pro Medical</Tagline>}
+        </LogoText>
       )}
-    </StyledLogoContainer>
+    </LogoContainer>
   );
 };
 

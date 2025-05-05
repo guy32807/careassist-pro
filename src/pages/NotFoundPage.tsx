@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import SeoHead from '../components/SEO/SeoHead';
+import { Helmet } from 'react-helmet-async';
 
 const Container = styled.div`
   max-width: 800px;
@@ -11,98 +11,89 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 8rem;
-  margin-bottom: 1rem;
+  font-size: 3rem;
   color: ${({ theme }) => theme.colors.primary};
-  line-height: 1;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 6rem;
-  }
+  margin-bottom: 1rem;
 `;
 
 const Subtitle = styled.h2`
-  font-size: 2rem;
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
 `;
 
-const Message = styled.p`
-  font-size: 1.25rem;
-  color: ${({ theme }) => theme.colors.textLight};
+const Text = styled.p`
   margin-bottom: 2rem;
   line-height: 1.6;
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-const PrimaryButton = styled(Link)`
+const BackButton = styled(Link)`
   display: inline-block;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   color: white;
   font-weight: 600;
-  padding: 0.875rem 1.75rem;
+  padding: 0.75rem 1.5rem;
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   text-decoration: none;
   transition: background-color 0.3s ease;
   
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryDark};
+    background-color: ${({ theme }) => theme.colors.secondaryDark || '#0056b3'};
     text-decoration: none;
+    color: white;
   }
 `;
 
-const SecondaryButton = styled(Link)`
-  display: inline-block;
-  background-color: white;
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 600;
-  padding: 0.875rem 1.75rem;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
+const LinkList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const LinkItem = styled(Link)`
+  color: ${({ theme }) => theme.colors.secondary};
   text-decoration: none;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  transition: background-color 0.3s ease;
   
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryLightest};
-    text-decoration: none;
+    text-decoration: underline;
   }
 `;
 
 const NotFoundPage: React.FC = () => {
   return (
-    <>
-      <SeoHead 
-        title="Page Not Found | 404 Error | MedSupplyGuide"
-        description="The page you are looking for could not be found. Return to our homepage to browse medical equipment and supplies."
-      />
+    <Container>
+      <Helmet>
+        <title>Page Not Found | CareAssist Pro</title>
+        <meta name="description" content="The page you are looking for could not be found." />
+      </Helmet>
       
-      <Container>
-        <Title>404</Title>
-        <Subtitle>Page Not Found</Subtitle>
-        <Message>
-          The page you're looking for doesn't exist or has been moved.
-          Please check the URL or return to our homepage.
-        </Message>
-        <ButtonGroup>
-          <PrimaryButton to="/">
-            Return to Homepage
-          </PrimaryButton>
-          <SecondaryButton to="/products">
-            Browse Products
-          </SecondaryButton>
-        </ButtonGroup>
-      </Container>
-    </>
+      <Title>404</Title>
+      <Subtitle>Page Not Found</Subtitle>
+      
+      <Text>
+        We're sorry, but the page you're looking for doesn't exist or has been moved.
+      </Text>
+      
+      <Text>
+        You might want to check out some of these popular pages instead:
+      </Text>
+      
+      <LinkList>
+        <li><LinkItem to="/">Home</LinkItem></li>
+        <li><LinkItem to="/products">Products</LinkItem></li>
+        <li><LinkItem to="/category/mobility">Mobility</LinkItem></li>
+        <li><LinkItem to="/category/bathroom-safety">Bathroom Safety</LinkItem></li>
+        <li><LinkItem to="/blogs">Blog</LinkItem></li>
+      </LinkList>
+      
+      <BackButton to="/">
+        Return to Homepage
+      </BackButton>
+    </Container>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import BlogPostLayout from './BlogPostLayout';
 import styled from 'styled-components';
-import { getProductLink } from '../../constants/links';
+import { getProductLink } from '../../constants/affiliateLinks';
+import BlogPostLayout from './BlogPostLayout';
 
 const BlogImage = styled.img`
   max-width: 100%;
@@ -65,9 +65,16 @@ const Blog4: React.FC = () => {
       keywords="mobility aids, walkers, rollators, canes, walking canes, mobility devices, mobility equipment, mobility comparison, walking aids"
       image="/images/blog/mobility-aids.jpg"
       date="March 12, 2023"
-      author="Dr. Robert Williams, PT"
+      author="Thomas Grant, Physical Therapist"
       readTime="7 min read"
+      authorImage="https://placehold.co/80x80/e6f0ff/0062cc?text=TG"
+      category="Mobility"
+      featuredImage="/images/blog/mobility-aids.jpg"
     >
+      <p>
+        Maintaining mobility is crucial for independence, quality of life, and overall health. When mobility becomes challenging due to age, injury, or medical conditions, various mobility aids can provide the necessary support. This guide compares three common mobility aids—walkers, rollators, and canes—to help you determine which option best meets your specific needs.
+      </p>
+      
       <p>
         Mobility aids can dramatically improve independence, safety, and quality of life for individuals with balance issues, weakness, or other mobility challenges. However, with so many options available – from simple canes to sophisticated rollators – choosing the right device can be confusing.
       </p>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import SeoHead from '../components/SEO/SeoHead';
-import { getProductLink, getCategoryLink } from '../constants/links';
+import { getProductLink, getCategoryLink } from '../constants/affiliateLinks';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 
 const Hero = styled.section`

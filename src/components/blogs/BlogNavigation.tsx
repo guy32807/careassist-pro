@@ -1,88 +1,139 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-const NavContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  padding: 1.5rem;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  margin-bottom: 2rem;
-`;
-
-const NavTitle = styled.h3`
-  color: ${({ theme }) => theme.colors.primary};
-  margin-top: 0;
-  margin-bottom: 1rem;
-`;
-
-const BlogList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const BlogItem = styled.li`
-  margin-bottom: 0.75rem;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const BlogLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.text};
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-  transition: background-color 0.2s ease;
-  
-  &:hover, &.active {
-    background-color: ${({ theme }) => theme.colors.primaryLightest};
-    color: ${({ theme }) => theme.colors.primary};
-  }
-  
-  &.active {
-    font-weight: 600;
-  }
-`;
-
-const BlogIcon = styled.span`
-  margin-right: 0.5rem;
-  font-size: 1rem;
-`;
-
-interface BlogNavigationProps {
-  currentBlogId?: string;
+interface PostInfo {
+  id: string | null;
+  title: string;
+  image: string;
 }
 
-const BlogNavigation: React.FC<BlogNavigationProps> = ({ currentBlogId }) => {
-  const blogs = [
-    { id: '1', title: 'Complete Guide to Bathroom Safety', path: '/blogs/bathroom-safety-guide' },
-    { id: '2', title: 'Bathroom Safety for the Elderly', path: '/blogs/elderly-bathroom-safety' },
-    { id: '3', title: 'Benefits of Walk-In Bathtubs', path: '/blogs/walk-in-bathtub-benefits' },
-    { id: '4', title: 'Mobility Aids Comparison Guide', path: '/blogs/mobility-aids-comparison' },
-    { id: '5', title: 'Medical Bathroom Design', path: '/blogs/medical-bathroom-design' },
-  ];
+interface BlogNavigationProps {
+  prevPost: PostInfo | null;
+  nextPost: PostInfo | null;
+}
 
+const NavigationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid ${({ theme }) => theme.colors?.background || '#e9ecef'};
+`;
+
+const NavItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  width: 48%;
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors?.text || '#333'};
+  padding: 1rem;
+  border-radius: ${({ theme }) => theme.borderRadius?.medium || '8px'};
+  background-color: ${({ theme }) => theme.colors?.background || '#e9ecef'};
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
+  }
+`;
+
+const PrevPost = styled(NavItem)`
+  justify-content: flex-start;
+`;
+
+const NextPost = styled(NavItem)`
+  justify-content: flex-end;
+  text-align: right;
+`;
+
+const NavArrow = styled.span`
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+`;
+
+const NavContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const NavLabel = styled.span`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors?.textLight || '#6c757d'};
+  margin-bottom: 0.25rem;
+`;
+
+const NavTitle = styled.span`
+  font-weight: 500;
+  font-size: 0.9rem;
+  
+  @media (min-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+
+const NavImage = styled.img`
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: ${({ theme }) => theme.borderRadius?.small || '4px'};
+  margin: 0 0.75rem;
+  
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 80px;
+  }
+`;
+
+const Placeholder = styled.div`
+  width: 48%;
+`;
+
+const BlogNavigation: React.FC<BlogNavigationProps> = ({ prevPost, nextPost }) => {
   return (
-    <NavContainer>
-      <NavTitle>Related Articles</NavTitle>
-      <BlogList>
-        {blogs.map((blog) => (
-          <BlogItem key={blog.id}>
-            <BlogLink 
-              to={blog.path} 
-              className={currentBlogId === blog.id ? 'active' : ''}
-            >
-              <BlogIcon>📝</BlogIcon>
-              {blog.title}
-            </BlogLink>
-          </BlogItem>
-        ))}
-      </BlogList>
-    </NavContainer>
+    <NavigationContainer>
+      {prevPost ? (
+        <PrevPost to={`/blogs/${prevPost.id}`}>
+          <NavArrow>←</NavArrow>
+          <NavImage 
+            src={prevPost.image} 
+            alt={prevPost.title}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = `https://placehold.co/160x160/e6f0ff/0062cc?text=Prev`;
+            }}
+          />
+          <NavContent>
+            <NavLabel>Previous Post</NavLabel>
+            <NavTitle>{prevPost.title}</NavTitle>
+          </NavContent>
+        </PrevPost>
+      ) : (
+        <Placeholder />
+      )}
+      
+      {nextPost ? (
+        <NextPost to={`/blogs/${nextPost.id}`}>
+          <NavContent>
+            <NavLabel>Next Post</NavLabel>
+            <NavTitle>{nextPost.title}</NavTitle>
+          </NavContent>
+          <NavImage 
+            src={nextPost.image} 
+            alt={nextPost.title}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = `https://placehold.co/160x160/e6f0ff/0062cc?text=Next`;
+            }}
+          />
+          <NavArrow>→</NavArrow>
+        </NextPost>
+      ) : (
+        <Placeholder />
+      )}
+    </NavigationContainer>
   );
 };
 

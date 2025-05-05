@@ -3,8 +3,8 @@ import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../common/Logo';
 
-const HeaderContainer = styled.header`
-  background-color: white;
+const HeaderContainer = styled.div<{ $isOpen: boolean }>`
+  background-color: ${({ $isOpen, theme }) => $isOpen ? theme.colors?.primaryLight : 'white'};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -24,7 +24,7 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -40,8 +40,8 @@ const NavItem = styled.li`
   margin: 0 1rem;
 `;
 
-const NavLinkStyled = styled(NavLink)`
-  color: ${({ theme }) => theme.colors.text};
+const StyledNavLink = styled(NavLink)`
+  color: ${({ theme }) => theme.colors?.text || '#333'};
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 0;
@@ -54,12 +54,12 @@ const NavLinkStyled = styled(NavLink)`
     left: 0;
     width: 0;
     height: 2px;
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
     transition: width 0.3s ease;
   }
   
   &:hover, &.active {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
     
     &:after {
       width: 100%;
@@ -67,24 +67,24 @@ const NavLinkStyled = styled(NavLink)`
   }
 `;
 
-const MobileNavToggle = styled.button`
+const MobileNavToggle = styled.button<{ $isOpen: boolean }>`
   display: none;
   background: none;
   border: none;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors?.text || '#333'};
   font-size: 1.5rem;
   cursor: pointer;
   
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: 768px) {
     display: block;
   }
 `;
 
-const MobileNav = styled.div<{ isOpen: boolean }>`
+const MobileNav = styled.div<{ $isOpen: boolean }>`
   display: none;
   
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  @media (max-width: 768px) {
+    display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
     position: absolute;
     top: 100%;
     left: 0;
@@ -106,14 +106,25 @@ const MobileNavItem = styled.li`
 `;
 
 const MobileNavLink = styled(NavLink)`
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors?.text || '#333'};
   text-decoration: none;
   font-weight: 500;
   display: block;
   padding: 0.5rem 0;
   
   &:hover, &.active {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
+  }
+`;
+
+const LogoTextLink = styled(Link)`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: none;
   }
 `;
 
@@ -125,54 +136,39 @@ const Header: React.FC = () => {
   };
   
   return (
-    <HeaderContainer>
+    <HeaderContainer $isOpen={isMobileNavOpen}>
       <HeaderContent>
         <Logo />
         
         <Nav>
           <NavList>
             <NavItem>
-              <NavLinkStyled to="/" end>Home</NavLinkStyled>
+              <StyledNavLink to="/" end>Home</StyledNavLink>
             </NavItem>
             <NavItem>
-              <NavLinkStyled to="/products">Products</NavLinkStyled>
+              <StyledNavLink to="/products">Products</StyledNavLink>
             </NavItem>
             <NavItem>
-              <NavLinkStyled to="/category/mobility">Mobility</NavLinkStyled>
+              <StyledNavLink to="/category/mobility">Mobility</StyledNavLink>
             </NavItem>
             <NavItem>
-              <NavLinkStyled to="/category/bathroom-safety">Bathroom Safety</NavLinkStyled>
+              <StyledNavLink to="/category/bathroom-safety">Bathroom Safety</StyledNavLink>
             </NavItem>
             <NavItem>
-              <NavLinkStyled to="/blogs">Blog</NavLinkStyled>
-            </NavItem>
-            <NavItem>
-              <NavLinkStyled to="/about">About</NavLinkStyled>
+              <StyledNavLink to="/blogs">Blogs</StyledNavLink>
             </NavItem>
           </NavList>
         </Nav>
         
-        <MobileNavToggle onClick={toggleMobileNav}>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            {isMobileNavOpen ? (
-              <path d="M18 6L6 18M6 6l12 12" />
-            ) : (
-              <path d="M3 12h18M3 6h18M3 18h18" />
-            )}
-          </svg>
+        <MobileNavToggle 
+          $isOpen={isMobileNavOpen} 
+          onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+          aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
+        >
+          {isMobileNavOpen ? "✕" : "☰"}
         </MobileNavToggle>
         
-        <MobileNav isOpen={isMobileNavOpen}>
+        <MobileNav $isOpen={isMobileNavOpen}>
           <MobileNavList>
             <MobileNavItem>
               <MobileNavLink to="/" end onClick={() => setIsMobileNavOpen(false)}>
@@ -196,12 +192,7 @@ const Header: React.FC = () => {
             </MobileNavItem>
             <MobileNavItem>
               <MobileNavLink to="/blogs" onClick={() => setIsMobileNavOpen(false)}>
-                Blog
-              </MobileNavLink>
-            </MobileNavItem>
-            <MobileNavItem>
-              <MobileNavLink to="/about" onClick={() => setIsMobileNavOpen(false)}>
-                About
+                Blogs
               </MobileNavLink>
             </MobileNavItem>
           </MobileNavList>

@@ -174,11 +174,11 @@ const BlogsPage: React.FC = () => {
                     </Link>
                   </BlogTitle>
                   <BlogExcerpt>{blog.excerpt}</BlogExcerpt>
-                  <SocialShare 
+                  <SocialShare
                     title={blog.title}
                     url={window.location.href}
                     description="Learn about essential bathroom safety equipment for seniors and individuals with mobility challenges."
-                    imageUrl={`https://yourdomain.com${blog.image}`}
+                    imageUrl={`https://yourdomain.com${blog.image}`} // Now this is properly typed
                   />
                   <ReadMoreLink to={blog.path}>
                     Read Article

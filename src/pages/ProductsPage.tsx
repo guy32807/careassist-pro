@@ -1,86 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import SeoHead from '../components/SEO/SeoHead';
-import { getCategoryLink, getProductLink } from '../constants/links';
+import { Helmet } from 'react-helmet-async';
+import Breadcrumbs from '../components/common/Breadcrumbs';
+import { getProductLink } from '../constants/affiliateLinks';
 
-const PageContainer = styled.div`
+const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
 `;
 
-const PageHeader = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
+const Title = styled.h1`
+  margin-bottom: 1.5rem;
 `;
 
-const PageTitle = styled.h1`
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const PageDescription = styled.p`
-  font-size: 1.125rem;
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  color: ${({ theme }) => theme.colors.textLight};
-  line-height: 1.6;
-`;
-
-const FilterSection = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+const Description = styled.div`
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-`;
-
-const FilterGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-  }
-`;
-
-const FilterButton = styled.button<{ $isActive?: boolean }>`
-  background-color: ${({ theme, $isActive }) => $isActive ? theme.colors.primary : 'white'};
-  color: ${({ theme, $isActive }) => $isActive ? 'white' : theme.colors.text};
-  border: 1px solid ${({ theme, $isActive }) => $isActive ? theme.colors.primary : theme.colors.border};
-  padding: 0.5rem 1rem;
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  
-  &:hover {
-    background-color: ${({ theme, $isActive }) => $isActive ? theme.colors.primaryDark : theme.colors.backgroundAlt};
-  }
-`;
-
-const SortSelect = styled.select`
-  padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-  font-size: 0.875rem;
-  background-color: white;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 100%;
-  }
 `;
 
 const ProductGrid = styled.div`
@@ -90,254 +25,169 @@ const ProductGrid = styled.div`
 `;
 
 const ProductCard = styled.div`
-  background-color: white;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  border-radius: ${({ theme }) => theme.borderRadius?.medium || '8px'};
   overflow: hidden;
-  box-shadow: ${({ theme }) => theme.shadows.small};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 `;
 
-const ProductImage = styled.div`
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+const ProductImage = styled.img`
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  padding: 1rem;
+  background-color: #f8f9fa;
 `;
 
-const ProductContent = styled.div`
+const ProductInfo = styled.div`
   padding: 1.5rem;
 `;
 
-const ProductCategory = styled.div`
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.textLight};
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-`;
-
 const ProductName = styled.h3`
-  font-size: 1.25rem;
-  color: ${({ theme }) => theme.colors.primary};
+  font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const ProductDescription = styled.p`
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 1rem;
-  line-height: 1.5;
 `;
 
-const ProductPrice = styled.div`
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.secondary};
+const ProductPrice = styled.p`
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: ${({ theme }) => theme.colors.primary};
   margin-bottom: 1rem;
 `;
 
-const ProductLink = styled.a`
+const ViewButton = styled.a`
   display: inline-block;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   color: white;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius?.small || '4px'};
   text-decoration: none;
+  text-align: center;
   transition: background-color 0.3s ease;
+  width: 100%;
   
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryDark};
+    background-color: ${({ theme }) => theme.colors.secondaryDark};
+    color: white;
     text-decoration: none;
   }
 `;
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  category: string;
-  image: string;
-}
-
-const allProducts: Product[] = [
+// Sample product data - in a real app, this would come from an API
+const products = [
   {
-    id: 'drive-medical-10105-1',
-    name: 'Drive Medical Aluminum Rollator Walker',
-    description: 'Lightweight aluminum rollator with fold-up seat, ergonomic handles, and convenient carry pouch.',
-    price: '$79.99',
-    category: 'mobility',
-    image: '/images/products/rollator-walker.jpg'
+    id: 'standard-wheelchair',
+    name: 'Standard Wheelchair',
+    description: 'Durable and comfortable wheelchair for everyday use with padded armrests and swing-away footrests.',
+    price: 299.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Standard+Wheelchair'
   },
   {
-    id: 'carex-health-brands-fgb22700-0000',
-    name: 'Carex Shower Chair Bath Seat',
-    description: 'Adjustable bath and shower seat with non-slip feet for safety and stability.',
-    price: '$39.99',
-    category: 'bathroom-safety',
-    image: '/images/products/shower-chair.jpg'
+    id: 'lightweight-wheelchair',
+    name: 'Lightweight Wheelchair',
+    description: 'Ultra-lightweight wheelchair perfect for travel and easy transport. Features a foldable frame and comfortable seating.',
+    price: 399.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Lightweight+Wheelchair'
   },
   {
-    id: 'medline-mds80215h',
-    name: 'Medline Semi-Electric Hospital Bed',
-    description: 'Semi-electric hospital bed with adjustable head and foot sections for enhanced comfort and care.',
-    price: '$899.99',
-    category: 'hospital-beds',
-    image: '/images/products/hospital-bed.jpg'
+    id: 'shower-chair',
+    name: 'Adjustable Shower Chair',
+    description: 'Height-adjustable shower chair with non-slip feet for secure bathing. Easy assembly with no tools required.',
+    price: 89.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Shower+Chair'
   },
   {
-    id: 'drive-medical-rtl10266',
-    name: 'Drive Medical Raised Toilet Seat',
-    description: 'Raised toilet seat with arms for added support and independence in the bathroom.',
-    price: '$49.99',
-    category: 'bathroom-safety',
-    image: '/images/products/raised-toilet-seat.jpg'
+    id: 'grab-bar',
+    name: 'Bathroom Grab Bar',
+    description: 'Securely mounted grab bar provides stability and support in the bathroom. Stainless steel construction.',
+    price: 49.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Grab+Bar'
   },
   {
-    id: 'mckesson-mds808200',
-    name: 'McKesson Blood Pressure Monitor',
-    description: 'Digital automatic blood pressure monitor for accurate readings at home.',
-    price: '$29.99',
-    category: 'daily-living',
-    image: '/images/products/blood-pressure-monitor.jpg'
+    id: 'rollator',
+    name: 'Folding Rollator Walker',
+    description: 'Four-wheel rollator with seat, basket, and adjustable height handles. Folds easily for storage and transport.',
+    price: 159.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Rollator'
   },
   {
-    id: 'invacare-9805p',
-    name: 'Invacare Wheelchair',
-    description: 'Lightweight, foldable wheelchair with padded armrests and swing-away footrests.',
-    price: '$289.99',
-    category: 'mobility',
-    image: '/images/products/wheelchair.jpg'
+    id: 'raised-toilet-seat',
+    name: 'Raised Toilet Seat with Handles',
+    description: 'Adds 5 inches of height to your toilet with secure arm supports for easier sitting and standing.',
+    price: 79.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Toilet+Seat'
   },
   {
-    id: 'drive-medical-rtl12062',
-    name: 'Drive Medical Bedside Commode',
-    description: 'Versatile 3-in-1 commode that can be used as a toilet safety frame, bedside commode, or raised toilet seat.',
-    price: '$59.99',
-    category: 'bathroom-safety',
-    image: '/images/products/bedside-commode.jpg'
+    id: 'cane',
+    name: 'Adjustable Walking Cane',
+    description: 'Adjustable height aluminum cane with comfortable grip handle and non-slip rubber tip.',
+    price: 34.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Walking+Cane'
   },
   {
-    id: 'dynarex-4411',
-    name: 'Dynarex Disposable Underpads',
-    description: 'Pack of 100 disposable underpads for incontinence protection on beds and chairs.',
-    price: '$24.99',
-    category: 'incontinence',
-    image: '/images/products/underpads.jpg'
+    id: 'bed-rail',
+    name: 'Adjustable Bed Rail',
+    description: 'Provides support for getting in and out of bed. Adjustable height and length to fit most beds.',
+    price: 129.99,
+    image: 'https://placehold.co/600x400/e6f0ff/0062cc?text=Bed+Rail'
   }
 ];
 
 const ProductsPage: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [sortOrder, setSortOrder] = useState<string>('default');
-  
-  // Filter products based on selected category
-  const filteredProducts = activeCategory === 'all' 
-    ? allProducts 
-    : allProducts.filter(product => product.category === activeCategory);
-  
-  // Sort products based on selected sort order
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortOrder) {
-      case 'price_low_high':
-        return parseFloat(a.price.replace('$', '')) - parseFloat(b.price.replace('$', ''));
-      case 'price_high_low':
-        return parseFloat(b.price.replace('$', '')) - parseFloat(a.price.replace('$', ''));
-      case 'name_a_z':
-        return a.name.localeCompare(b.name);
-      case 'name_z_a':
-        return b.name.localeCompare(a.name);
-      default:
-        return 0;
-    }
-  });
-  
   return (
-    <>
-      <SeoHead 
-        title="Medical Equipment & Supplies | Product Catalog | MedSupplyGuide"
-        description="Browse our complete catalog of medical equipment and supplies. Find wheelchairs, hospital beds, bathroom safety equipment, and more for home care and medical facilities."
-        keywords="medical supplies, medical equipment, mobility aids, bathroom safety, hospital beds, daily living aids, healthcare products, home care"
+    <Container>
+      <Helmet>
+        <title>Medical Products & Equipment | CareAssist Pro</title>
+        <meta name="description" content="Browse our selection of high-quality medical equipment and mobility aids designed for comfort, safety, and independence." />
+        <meta name="keywords" content="medical equipment, mobility aids, bathroom safety, daily living aids, wheelchairs, walkers, shower chairs" />
+      </Helmet>
+      
+      <Breadcrumbs
+        items={[
+          { name: 'Products' }
+        ]}
       />
       
-      <PageContainer>
-        <PageHeader>
-          <PageTitle>Medical Equipment & Supplies</PageTitle>
-          <PageDescription>
-            Browse our comprehensive selection of high-quality medical equipment and supplies designed to support independent living, enhance patient care, and improve quality of life.
-          </PageDescription>
-        </PageHeader>
-        
-        <FilterSection>
-          <FilterGroup>
-            <FilterButton 
-              $isActive={activeCategory === 'all'} 
-              onClick={() => setActiveCategory('all')}
-            >
-              All Products
-            </FilterButton>
-            <FilterButton 
-              $isActive={activeCategory === 'mobility'} 
-              onClick={() => setActiveCategory('mobility')}
-            >
-              Mobility
-            </FilterButton>
-            <FilterButton 
-              $isActive={activeCategory === 'bathroom-safety'} 
-              onClick={() => setActiveCategory('bathroom-safety')}
-            >
-              Bathroom Safety
-            </FilterButton>
-            <FilterButton 
-              $isActive={activeCategory === 'hospital-beds'} 
-              onClick={() => setActiveCategory('hospital-beds')}
-            >
-              Hospital Beds
-            </FilterButton>
-            <FilterButton 
-              $isActive={activeCategory === 'daily-living'} 
-              onClick={() => setActiveCategory('daily-living')}
-            >
-              Daily Living
-            </FilterButton>
-          </FilterGroup>
-          
-          <SortSelect value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-            <option value="default">Sort by: Featured</option>
-            <option value="price_low_high">Price: Low to High</option>
-            <option value="price_high_low">Price: High to Low</option>
-            <option value="name_a_z">Name: A to Z</option>
-            <option value="name_z_a">Name: Z to A</option>
-          </SortSelect>
-        </FilterSection>
-        
-        <ProductGrid>
-          {sortedProducts.map((product) => (
-            <ProductCard key={product.id}>
-              <ProductImage style={{ backgroundImage: `url(${product.image})` }} />
-              <ProductContent>
-                <ProductCategory>{product.category.replace('-', ' ')}</ProductCategory>
-                <ProductName>{product.name}</ProductName>
-                <ProductDescription>{product.description}</ProductDescription>
-                <ProductPrice>{product.price}</ProductPrice>
-                <ProductLink 
-                  href={getProductLink(product.id, `products_page_${product.category}`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Product
-                </ProductLink>
-              </ProductContent>
-            </ProductCard>
-          ))}
-        </ProductGrid>
-      </PageContainer>
-    </>
+      <Title>Medical Products & Equipment</Title>
+      
+      <Description>
+        <p>Browse our selection of high-quality medical equipment and mobility aids. We offer products designed to improve comfort, safety, and independence for individuals with mobility challenges or those recovering from surgery or injury.</p>
+      </Description>
+      
+      <ProductGrid>
+        {products.map(product => (
+          <ProductCard key={product.id}>
+            <ProductImage src={product.image} alt={product.name} />
+            <ProductInfo>
+              <ProductName>{product.name}</ProductName>
+              <ProductDescription>{product.description}</ProductDescription>
+              <ProductPrice>${product.price.toFixed(2)}</ProductPrice>
+              <ViewButton 
+                href={getProductLink(product.id, 'product_listing')} 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                View Details
+              </ViewButton>
+            </ProductInfo>
+          </ProductCard>
+        ))}
+      </ProductGrid>
+    </Container>
   );
 };
 

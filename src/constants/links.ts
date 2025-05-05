@@ -16,52 +16,71 @@ export const SOCIAL_LINKS = {
   youtube: 'https://www.youtube.com/channel/UCFaZsGOOIxQPNO6Zn9ZCtOA'
 };
 
+// Define your affiliate base URL
+const AFFILIATE_BASE_URL = 'https://www.avacaremedical.com';
+
+// Add your affiliate ID or tracking parameters
+const AFFILIATE_PARAMS = 'affiliate=careassistpro';
+
 /**
- * Generates an affiliate link for a specific product
- * @param productId The ID of the product (can be SKU or path)
- * @param source Tracking source
- * @returns The complete affiliate link
+ * Generate a product link with affiliate tracking
+ * @param productId - The product ID or slug
+ * @param trackingSource - Optional tracking source for analytics
+ * @returns Full affiliate link
  */
-export const getProductLink = (productId: string, source: string = 'general'): string => {
-  // Base affiliate URL
-  const baseAffiliateUrl = 'https://www.tkqlhce.com/click-9083409-13376996';
+export const getProductLink = (productId: string, trackingSource?: string): string => {
+  let url = `${AFFILIATE_BASE_URL}/product/${productId}?${AFFILIATE_PARAMS}`;
   
-  // Add tracking parameters
-  let url = `${baseAffiliateUrl}`;
-  
-  // If specific product ID is provided, add it as a parameter
-  if (productId) {
-    url += `?u=https%3A%2F%2Fwww.avacaremedical.com%2F${productId}`;
-  }
-  
-  // Add source tracking if available
-  if (source && source !== 'general') {
-    url += url.includes('?') ? `&s=${source}` : `?s=${source}`;
+  if (trackingSource) {
+    url += `&source=${trackingSource}`;
   }
   
   return url;
 };
 
 /**
- * Get general site affiliate link
- * @param category Optional category to link to
- * @param source Source of the click for tracking
- * @returns Affiliate link to the category or main site
+ * Generate a category link with affiliate tracking
+ * @param category - The category slug
+ * @param trackingSource - Optional tracking source for analytics
+ * @returns Full affiliate link
  */
-export const getCategoryLink = (category?: string, source: string = 'general'): string => {
-  // Base affiliate URL
-  const baseAffiliateUrl = 'https://www.tkqlhce.com/click-9083409-13376996';
+export const getCategoryLink = (category: string, trackingSource?: string): string => {
+  let url = `${AFFILIATE_BASE_URL}/category/${category}?${AFFILIATE_PARAMS}`;
   
-  let url = baseAffiliateUrl;
-  
-  // Add category if provided
-  if (category) {
-    url += `?u=https%3A%2F%2Fwww.avacaremedical.com%2F${category}`;
+  if (trackingSource) {
+    url += `&source=${trackingSource}`;
   }
   
-  // Add source tracking
-  if (source && source !== 'general') {
-    url += url.includes('?') ? `&s=${source}` : `?s=${source}`;
+  return url;
+};
+
+/**
+ * Generate a search link with affiliate tracking
+ * @param query - The search query
+ * @param trackingSource - Optional tracking source for analytics
+ * @returns Full affiliate link
+ */
+export const getSearchLink = (query: string, trackingSource?: string): string => {
+  let url = `${AFFILIATE_BASE_URL}/search?q=${encodeURIComponent(query)}&${AFFILIATE_PARAMS}`;
+  
+  if (trackingSource) {
+    url += `&source=${trackingSource}`;
+  }
+  
+  return url;
+};
+
+/**
+ * Generate a generic affiliate link
+ * @param path - The path to append to the base URL
+ * @param trackingSource - Optional tracking source for analytics
+ * @returns Full affiliate link
+ */
+export const getAffiliateLink = (path: string = '', trackingSource?: string): string => {
+  let url = `${AFFILIATE_BASE_URL}${path ? '/' + path : ''}?${AFFILIATE_PARAMS}`;
+  
+  if (trackingSource) {
+    url += `&source=${trackingSource}`;
   }
   
   return url;

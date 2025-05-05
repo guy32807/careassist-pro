@@ -3,30 +3,59 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
   
   html, body {
-    margin: 0;
-    padding: 0;
-    font-family: ${({ theme }) => theme.typography.fontFamily};
+    font-family: ${({ theme }) => theme.typography?.fontFamily || theme.fonts.body};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
-    line-height: ${({ theme }) => theme.typography.baseLineHeight};
+    line-height: ${({ theme }) => theme.typography?.baseLineHeight || 1.5};
   }
   
   main {
-    min-height: calc(100vh - 250px);
-    padding-bottom: 3rem;
+    min-height: 100vh;
+    padding-bottom: 2rem;
   }
   
   h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
-    font-family: ${({ theme }) => theme.typography.headingFontFamily};
-    font-weight: ${({ theme }) => theme.typography.headingFontWeight};
-    line-height: ${({ theme }) => theme.typography.headingLineHeight};
+    font-family: ${({ theme }) => theme.typography?.headingFontFamily || theme.fonts.heading};
+    font-weight: ${({ theme }) => theme.typography?.headingFontWeight || theme.fontWeights.bold};
+    line-height: ${({ theme }) => theme.typography?.headingLineHeight || 1.2};
     color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  h1 {
+    font-size: ${({ theme }) => theme.typography?.h1?.fontSize || '2.5rem'};
+    margin-bottom: 1.5rem;
+  }
+  
+  h2 {
+    font-size: ${({ theme }) => theme.typography?.h2?.fontSize || '2rem'};
+    margin-bottom: 1.25rem;
+  }
+  
+  h3 {
+    font-size: ${({ theme }) => theme.typography?.h3?.fontSize || '1.75rem'};
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+  }
+  
+  a {
+    color: ${({ theme }) => theme.colors.secondary};
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: ${({ theme }) => theme.colors.secondaryDark};
+    }
   }
   
   img {
@@ -34,34 +63,26 @@ const GlobalStyle = createGlobalStyle`
     height: auto;
   }
   
-  a {
-    color: ${({ theme }) => theme.colors.primary};
-    text-decoration: none;
-    
-    &:hover {
-      text-decoration: underline;
-    }
+  button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
   }
   
   button {
     cursor: pointer;
   }
   
-  .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+  ul, ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
   }
   
-  .section {
-    padding: 4rem 0;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    .section {
-      padding: 3rem 0;
-    }
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    background-color: ${({ theme }) => theme.colors.backgroundAlt || '#f1f3f5'};
+    padding: 0.2em 0.4em;
+    border-radius: ${({ theme }) => theme.borderRadius?.small || '4px'};
+    font-size: 0.9em;
   }
 `;
 

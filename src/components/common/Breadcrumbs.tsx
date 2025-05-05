@@ -2,72 +2,60 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const BreadcrumbsContainer = styled.nav`
-  margin-bottom: 1.5rem;
-`;
+interface BreadcrumbItem {
+  name: string;
+  path?: string;
+}
 
-const BreadcrumbsList = styled.ol`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-`;
+interface BreadcrumbsProps {
+  items: BreadcrumbItem[];
+}
 
-const BreadcrumbItem = styled.li`
+const BreadcrumbContainer = styled.div`
   display: flex;
   align-items: center;
-  
-  &:not(:first-child)::before {
-    content: '/';
-    margin: 0 0.5rem;
-    color: ${({ theme }) => theme.colors.textLight};
-  }
+  margin: 1rem 0 2rem;
+  font-size: 0.9rem;
 `;
 
 const BreadcrumbLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors?.textLight || '#6c757d'};
   text-decoration: none;
+  transition: color 0.3s ease;
   
   &:hover {
+    color: ${({ theme }) => theme.colors?.primary || '#0062cc'};
     text-decoration: underline;
   }
 `;
 
-const CurrentPage = styled.span`
-  color: ${({ theme }) => theme.colors.textLight};
+const BreadcrumbSeparator = styled.span`
+  margin: 0 0.5rem;
+  color: ${({ theme }) => theme.colors?.textLight || '#6c757d'};
 `;
 
-interface BreadcrumbsProps {
-  items: Array<{
-    name: string;
-    path?: string;
-  }>;
-}
+const BreadcrumbCurrent = styled.span`
+  color: ${({ theme }) => theme.colors?.text || '#333'};
+  font-weight: 500;
+`;
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   return (
-    <BreadcrumbsContainer aria-label="Breadcrumbs">
-      <BreadcrumbsList>
-        <BreadcrumbItem>
-          <BreadcrumbLink to="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-        
-        {items.map((item, index) => (
-          <BreadcrumbItem key={index}>
-            {index === items.length - 1 ? (
-              <CurrentPage>{item.name}</CurrentPage>
-            ) : (
-              item.path ? (
-                <BreadcrumbLink to={item.path}>{item.name}</BreadcrumbLink>
-              ) : (
-                <span>{item.name}</span>
-              )
-            )}
-          </BreadcrumbItem>
-        ))}
-      </BreadcrumbsList>
-    </BreadcrumbsContainer>
+    <BreadcrumbContainer>
+      <BreadcrumbLink to="/">Home</BreadcrumbLink>
+      
+      {items.map((item, index) => (
+        <React.Fragment key={index}>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          
+          {index === items.length - 1 || !item.path ? (
+            <BreadcrumbCurrent>{item.name}</BreadcrumbCurrent>
+          ) : (
+            <BreadcrumbLink to={item.path}>{item.name}</BreadcrumbLink>
+          )}
+        </React.Fragment>
+      ))}
+    </BreadcrumbContainer>
   );
 };
 
