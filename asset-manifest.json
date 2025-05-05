@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/careassist-pro/static/js/main.673626ef.js",
+    "static/js/150.962f3963.chunk.js": "/careassist-pro/static/js/150.962f3963.chunk.js",
+    "static/js/357.d0254481.chunk.js": "/careassist-pro/static/js/357.d0254481.chunk.js",
+    "static/js/264.12855045.chunk.js": "/careassist-pro/static/js/264.12855045.chunk.js",
+    "static/js/503.01376f6f.chunk.js": "/careassist-pro/static/js/503.01376f6f.chunk.js",
+    "static/js/66.2c37eff8.chunk.js": "/careassist-pro/static/js/66.2c37eff8.chunk.js",
+    "static/js/453.5fe0f721.chunk.js": "/careassist-pro/static/js/453.5fe0f721.chunk.js",
+    "index.html": "/careassist-pro/index.html",
+    "main.673626ef.js.map": "/careassist-pro/static/js/main.673626ef.js.map",
+    "150.962f3963.chunk.js.map": "/careassist-pro/static/js/150.962f3963.chunk.js.map",
+    "357.d0254481.chunk.js.map": "/careassist-pro/static/js/357.d0254481.chunk.js.map",
+    "264.12855045.chunk.js.map": "/careassist-pro/static/js/264.12855045.chunk.js.map",
+    "503.01376f6f.chunk.js.map": "/careassist-pro/static/js/503.01376f6f.chunk.js.map",
+    "66.2c37eff8.chunk.js.map": "/careassist-pro/static/js/66.2c37eff8.chunk.js.map",
+    "453.5fe0f721.chunk.js.map": "/careassist-pro/static/js/453.5fe0f721.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.673626ef.js"
+  ]
+}

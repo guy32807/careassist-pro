@@ -1,0 +1,5 @@
+<!-- filepath: /Users/augustedubuisson/Library/CloudStorage/OneDrive-Personal/CJ/avacare-medical-affiliate/public/robots.txt -->
+User-agent: *
+Allow: /
+
+Sitemap: https://yourdomain.com/sitemap.xml
